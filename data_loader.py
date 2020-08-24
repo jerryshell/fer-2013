@@ -3,11 +3,13 @@ import itertools
 import numpy as np
 import pandas as pd
 
+import config
+
 
 class DataLoader:
     def __init__(self):
         # 加载数据
-        data = pd.read_csv('./data/train.csv')
+        data = pd.read_csv(config.train_data_filepath)
         print('data.shape', data.shape)
         print(data.describe())
 
