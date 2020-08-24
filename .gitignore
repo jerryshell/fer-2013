@@ -1,0 +1,9 @@
+# IDEA
+.idea
+__pycache__
+data/
+logs/
+**/*.h5
+
+# macOS
+*.DS_Store
