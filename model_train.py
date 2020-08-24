@@ -9,8 +9,8 @@ def train(
         data_helper: DataHelper,
         model: keras.Model,
         save_filename: str,
-        batch_size=64,
-        epochs=10
+        batch_size: int = 64,
+        epochs: int = 10
 ):
     # 模型信息
     model.summary()

@@ -23,7 +23,7 @@ class DataHelper:
         self.test_data_count = data_loader.test_data_count
 
     # data_generator 中读取 batch_size 个数据
-    def get_batch_pixel_list_and_label(self, data_generator: iter, batch_size):
+    def get_batch_pixel_list_and_label(self, data_generator: iter, batch_size: int):
         # 初始化返回结果
         batch_label = np.zeros(shape=(batch_size,))
         batch_pixel_list = np.zeros(shape=(batch_size, 48 * 48))
@@ -39,21 +39,21 @@ class DataHelper:
         return batch_pixel_list, batch_label
 
     # 训练数据生成器
-    def train_data_generator(self, batch_size):
+    def train_data_generator(self, batch_size: int):
         while True:
             yield self.get_batch_pixel_list_and_label(self.raw_train_data_generator, batch_size)
 
     # 验证数据生成器
-    def validation_data_generator(self, batch_size):
+    def validation_data_generator(self, batch_size: int):
         while True:
             yield self.get_batch_pixel_list_and_label(self.raw_validation_data_generator, batch_size)
 
     # 测试数据生成器
-    def test_data_generator(self, batch_size):
+    def test_data_generator(self, batch_size: int):
         while True:
             yield self.get_batch_pixel_list_and_label(self.raw_test_data_generator, batch_size)
 
-    def pixel_raw_data2pixel_list(self, pixel_raw_data):
+    def pixel_raw_data2pixel_list(self, pixel_raw_data: str):
         return [int(item) for item in pixel_raw_data.split(' ')]
 
 
