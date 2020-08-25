@@ -14,14 +14,12 @@ def create_model_cnn():
         name='reshape'
     )(inputs)
 
-    resnet = keras.applications.resnet.ResNet50(
+    resnet = keras.applications.ResNet50V2(
         include_top=False,
         weights=None,
         input_shape=(48, 48, 1),
-        pooling='max'
+        pooling='avg'
     )(reshape)
-
-    # flatten = keras.layers.Flatten()(resnet)
 
     outputs = keras.layers.Dense(
         units=7,
