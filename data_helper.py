@@ -26,14 +26,14 @@ class DataHelper:
     def get_batch_value_and_label(self, data_generator: iter, batch_size: int):
         # 初始化返回结果
         batch_label = np.zeros(shape=(batch_size,))
-        batch_value = np.zeros(shape=(batch_size, 48, 48))
+        batch_value = np.zeros(shape=(batch_size, 48, 48, 1))
         # 根据 batch_size 填充返回结果
         for batch_index in range(batch_size):
             # 从 data_generator 中读取下一个数据
             label, pixel_raw_data = next(data_generator)
             # pixel_raw_data2pixel_list
             pixel_list = self.pixel_raw_data2pixel_list(pixel_raw_data)
-            # 数据重整 (48 * 48,) -> (48, 48)
+            # 数据重整 (48 * 48,) -> (48, 48, 1)
             pixel_list_reshape = self.pixel_list_reshape(pixel_list)
             # 填充返回结果
             batch_label[batch_index] = label
@@ -59,7 +59,7 @@ class DataHelper:
         return [int(item) for item in pixel_raw_data.split(' ')]
 
     def pixel_list_reshape(self, pixel_list: list):
-        return np.reshape(pixel_list, (48, 48))
+        return np.reshape(pixel_list, (48, 48, 1))
 
 
 if __name__ == '__main__':
