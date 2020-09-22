@@ -35,37 +35,40 @@ def create_my_model():
         name='inputs'
     )
 
-    cnn1 = keras.layers.SeparableConv1D(
+    x = keras.layers.SeparableConv1D(
         filters=64,
         kernel_size=3,
         name='cnn1',
     )(inputs)
-    bn1 = keras.layers.BatchNormalization()(cnn1)
-    relu1 = keras.layers.ReLU(name='relu1')(bn1)
-    max_pool1 = keras.layers.MaxPooling1D(
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.ReLU(name='relu1')(x)
+    x = keras.layers.MaxPooling1D(
         name='max_pool1',
-    )(relu1)
+    )(x)
 
-    cnn2 = keras.layers.SeparableConv1D(
+    x = keras.layers.SeparableConv1D(
         filters=128,
         kernel_size=3,
         name='cnn2',
-    )(max_pool1)
-    bn1 = keras.layers.BatchNormalization()(cnn2)
-    relu2 = keras.layers.ReLU(name='relu2')(bn1)
-    max_pool2 = keras.layers.MaxPooling1D(
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.ReLU(name='relu2')(x)
+    x = keras.layers.MaxPooling1D(
         name='max_pool2',
-    )(relu2)
+    )(x)
 
-    flatten = keras.layers.Flatten()(max_pool2)
+    x = keras.layers.Flatten()(x)
 
-    # dropout = keras.layers.Dropout(rate=0.5)(flatten)
+    x = keras.layers.Dropout(
+        rate=0.5,
+        name='dropout',
+    )(x)
 
     outputs = keras.layers.Dense(
         units=7,
         activation='softmax',
         name='outputs',
-    )(flatten)
+    )(x)
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
