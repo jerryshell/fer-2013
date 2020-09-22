@@ -5,21 +5,16 @@ from data_helper import DataHelper
 
 def create_model_cnn():
     inputs = keras.layers.Input(
-        shape=(48 * 48,),
+        shape=(48, 48),
         name='inputs'
     )
 
-    reshape = keras.layers.Reshape(
-        target_shape=(48, 48, 1),
-        name='reshape'
-    )(inputs)
-
-    resnet = keras.applications.ResNet50V2(
+    resnet = keras.applications.MobileNetV2(
         include_top=False,
         weights=None,
         input_shape=(48, 48, 1),
         pooling='avg'
-    )(reshape)
+    )(inputs)
 
     outputs = keras.layers.Dense(
         units=7,

@@ -26,16 +26,18 @@ class DataHelper:
     def get_batch_pixel_list_and_label(self, data_generator: iter, batch_size: int):
         # 初始化返回结果
         batch_label = np.zeros(shape=(batch_size,))
-        batch_pixel_list = np.zeros(shape=(batch_size, 48 * 48))
+        batch_pixel_list = np.zeros(shape=(batch_size, 48, 48))
         # 根据 batch_size 填充返回结果
         for batch_index in range(batch_size):
             # 从 data_generator 中读取下一个数据
             label, pixel_raw_data = next(data_generator)
             # pixel_raw_data2pixel_list
             pixel_list = self.pixel_raw_data2pixel_list(pixel_raw_data)
+            # pixel_list_reshape
+            pixel_list_reshape = self.pixel_list_reshape(pixel_list)
             # 填充返回结果
             batch_label[batch_index] = label
-            batch_pixel_list[batch_index] = pixel_list
+            batch_pixel_list[batch_index] = pixel_list_reshape
         return batch_pixel_list, batch_label
 
     # 训练数据生成器
@@ -56,6 +58,9 @@ class DataHelper:
     def pixel_raw_data2pixel_list(self, pixel_raw_data: str):
         return [int(item) for item in pixel_raw_data.split(' ')]
 
+    def pixel_list_reshape(self, pixel_list: list):
+        return np.reshape(pixel_list, (48, 48))
+
 
 if __name__ == '__main__':
     data_helper = DataHelper()
@@ -71,6 +76,9 @@ if __name__ == '__main__':
 
         pixel_list = data_helper.pixel_raw_data2pixel_list(pixel_raw_data)
         print('pixel_list', pixel_list)
+
+        pixel_list_reshape = data_helper.pixel_list_reshape(pixel_list)
+        print('pixel_list_reshape', pixel_list_reshape)
 
         if index == 5:
             break
