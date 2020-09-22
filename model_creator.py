@@ -3,13 +3,13 @@ import tensorflow.keras as keras
 from data_helper import DataHelper
 
 
-def create_model_cnn():
+def create_model_resnet_101():
     inputs = keras.layers.Input(
         shape=(48, 48),
         name='inputs'
     )
 
-    resnet = keras.applications.MobileNetV2(
+    resnet = keras.applications.ResNet101V2(
         include_top=False,
         weights=None,
         input_shape=(48, 48, 1),
@@ -35,5 +35,5 @@ if __name__ == '__main__':
     print('data loading...')
     data_helper = DataHelper()
 
-    model = create_model_cnn()
+    model = create_model_resnet_101()
     model.summary()

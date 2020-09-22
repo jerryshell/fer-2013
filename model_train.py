@@ -75,11 +75,11 @@ if __name__ == '__main__':
     data_helper = DataHelper()
 
     # 重新训练一个新模型
-    model = model_creator.create_model_cnn()
+    model = model_creator.create_model_resnet_101()
     train(
         data_helper=data_helper,
         model=model,
-        save_filename='cnn.' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.h5',
+        save_filename='fer.' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.h5',
         batch_size=batch_size,
         epochs=epochs
     )
