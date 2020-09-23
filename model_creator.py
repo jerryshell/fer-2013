@@ -22,9 +22,9 @@ def create_model_resnet_101():
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
-        optimizer='adam',
-        loss='sparse_categorical_crossentropy',
-        metrics=['sparse_categorical_accuracy'],
+        optimizer=keras.optimizers.Adam(),
+        loss=keras.losses.SparseCategoricalCrossentropy(),
+        metrics=['acc'],
     )
     return model
 
@@ -46,7 +46,7 @@ def create_my_model():
         kernel_regularizer=keras.regularizers.l2(0.01),
     )(inputs)
     x = keras.layers.SeparableConv2D(
-        filters=64,
+        filters=base_filters,
         kernel_size=3,
         activation='relu',
         padding='same',
@@ -168,14 +168,9 @@ def create_my_model():
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
-        optimizer=keras.optimizers.Adam(
-            lr=0.001,
-            beta_1=0.9,
-            beta_2=0.999,
-            epsilon=1e-7,
-        ),
-        loss='sparse_categorical_crossentropy',
-        metrics=['sparse_categorical_accuracy'],
+        optimizer=keras.optimizers.Adam(),
+        loss=keras.losses.SparseCategoricalCrossentropy(),
+        metrics=['acc'],
     )
     return model
 
@@ -197,7 +192,7 @@ def create_model_gitshanks():
         kernel_regularizer=keras.regularizers.l2(0.01),
     )(inputs)
     x = keras.layers.Conv2D(
-        filters=64,
+        filters=base_filters,
         kernel_size=3,
         activation='relu',
         padding='same',
@@ -319,14 +314,9 @@ def create_model_gitshanks():
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
-        optimizer=keras.optimizers.Adam(
-            lr=0.001,
-            beta_1=0.9,
-            beta_2=0.999,
-            epsilon=1e-7,
-        ),
-        loss='sparse_categorical_crossentropy',
-        metrics=['sparse_categorical_accuracy'],
+        optimizer=keras.optimizers.Adam(),
+        loss=keras.losses.SparseCategoricalCrossentropy(),
+        metrics=['acc'],
     )
     return model
 

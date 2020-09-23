@@ -39,7 +39,7 @@ def train(
             # 定时保存模型
             keras.callbacks.ModelCheckpoint(
                 filepath=save_filename,
-                monitor='sparse_categorical_accuracy',
+                monitor='val_acc',
                 verbose=0,
                 save_best_only=True,
                 save_weights_only=False,
