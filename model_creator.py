@@ -1,4 +1,13 @@
 import tensorflow.keras as keras
+from tensorflow.python.keras.applications import resnet
+
+
+def stack_fn(x):
+    x = resnet.stack2(x, 64, 2, stride1=1, name='conv2')
+    x = resnet.stack2(x, 128, 2, stride1=2, name='conv3')
+    x = resnet.stack2(x, 256, 2, stride1=2, name='conv4')
+    x = resnet.stack2(x, 512, 2, stride1=2, name='conv5')
+    return x
 
 
 def create_model_resnet_50():
@@ -7,18 +16,36 @@ def create_model_resnet_50():
         name='inputs'
     )
 
-    resnet = keras.applications.ResNet50V2(
+    x = resnet.ResNet(
+        stack_fn=stack_fn,
+        preact=False,
+        use_bias=False,
+        model_name='resnet18',
         include_top=False,
         weights=None,
+        input_tensor=None,
         input_shape=(48, 48, 1),
-        pooling='avg'
+        pooling='avg',
+        classes=1000,
+        classifier_activation='softmax'
     )(inputs)
+
+    # resnet = keras.applications.ResNet50V2(
+    #     include_top=False,
+    #     weights=None,
+    #     input_shape=(48, 48, 1),
+    #     pooling='avg'
+    # )(inputs)
+
+    x = keras.layers.Dropout(
+        rate=0.5
+    )(x)
 
     outputs = keras.layers.Dense(
         units=7,
         activation='softmax',
         name='outputs',
-    )(resnet)
+    )(x)
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
@@ -71,7 +98,7 @@ def create_my_model_64():
         filters=base_filters,
         kernel_size=3,
         activation='relu',
-        kernel_regularizer=keras.regularizers.l2(0.01),
+        kernel_regularizer=keras.regularizers.l2(),
     )(inputs)
     x = keras.layers.SeparableConv2D(
         filters=base_filters,
@@ -166,7 +193,7 @@ def create_my_model_64():
         activation='relu',
     )(x)
     x = keras.layers.Dropout(
-        rate=0.5
+        rate=0.4
     )(x)
 
     # dense 2
@@ -175,7 +202,7 @@ def create_my_model_64():
         activation='relu',
     )(x)
     x = keras.layers.Dropout(
-        rate=0.5
+        rate=0.4
     )(x)
 
     # dense 3
