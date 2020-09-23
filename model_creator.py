@@ -4,17 +4,29 @@ from tensorflow.python.keras.applications import resnet
 
 def stack_fn(x):
     x = resnet.stack2(x, 64, 2, stride1=1, name='conv2')
+    x = keras.layers.Dropout(rate=0.5)(x)
+
     x = resnet.stack2(x, 128, 2, stride1=2, name='conv3')
+    x = keras.layers.Dropout(rate=0.5)(x)
+
     x = resnet.stack2(x, 256, 2, stride1=2, name='conv4')
+    x = keras.layers.Dropout(rate=0.5)(x)
+
     x = resnet.stack2(x, 512, 2, stride1=2, name='conv5')
+    x = keras.layers.Dropout(rate=0.5)(x)
+
     return x
 
 
-def create_model_resnet_50():
+def create_resnet():
     inputs = keras.layers.Input(
         shape=(48, 48, 1),
         name='inputs'
     )
+
+    x = keras.layers.Dropout(
+        rate=0.2
+    )(inputs)
 
     x = resnet.ResNet(
         stack_fn=stack_fn,
@@ -23,19 +35,9 @@ def create_model_resnet_50():
         model_name='resnet18',
         include_top=False,
         weights=None,
-        input_tensor=None,
         input_shape=(48, 48, 1),
         pooling='avg',
-        classes=1000,
-        classifier_activation='softmax'
-    )(inputs)
-
-    # resnet = keras.applications.ResNet50V2(
-    #     include_top=False,
-    #     weights=None,
-    #     input_shape=(48, 48, 1),
-    #     pooling='avg'
-    # )(inputs)
+    )(x)
 
     x = keras.layers.Dropout(
         rate=0.5
@@ -84,7 +86,7 @@ def create_model_resnet_101():
     return model
 
 
-def create_my_model_64():
+def create_model_64():
     # input
     inputs = keras.layers.Input(
         shape=(48, 48, 1),
@@ -230,8 +232,8 @@ def create_my_model_64():
     return model
 
 
-def test_resnet_50():
-    model = create_model_resnet_50()
+def test_resnet():
+    model = create_resnet()
     model.summary()
 
 
@@ -240,12 +242,12 @@ def test_resnet_101():
     model.summary()
 
 
-def test_my_model_64():
-    model = create_my_model_64()
+def test_model_64():
+    model = create_model_64()
     model.summary()
 
 
 if __name__ == '__main__':
-    test_resnet_50()
+    test_resnet()
     test_resnet_101()
-    test_my_model_64()
+    test_model_64()
