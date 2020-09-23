@@ -86,6 +86,119 @@ def create_model_resnet_101():
     return model
 
 
+def create_model():
+    # input
+    inputs = keras.layers.Input(
+        shape=(48, 48, 1),
+        name='inputs',
+    )
+
+    # hidden 1
+    x = keras.layers.Conv2D(
+        filters=16,
+        kernel_size=7,
+        padding='same',
+    )(inputs)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Conv2D(
+        filters=16,
+        kernel_size=7,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Activation(activation='relu')(x)
+    x = keras.layers.AveragePooling2D(
+        pool_size=2,
+        padding='same',
+    )(x)
+    x = keras.layers.Dropout(rate=0.5)(x)
+
+    # hidden 2
+    x = keras.layers.Conv2D(
+        filters=32,
+        kernel_size=5,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Conv2D(
+        filters=32,
+        kernel_size=5,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Activation(activation='relu')(x)
+    x = keras.layers.AveragePooling2D(
+        pool_size=2,
+        padding='same',
+    )(x)
+    x = keras.layers.Dropout(rate=0.5)(x)
+
+    # hidden 3
+    x = keras.layers.Conv2D(
+        filters=64,
+        kernel_size=3,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Conv2D(
+        filters=64,
+        kernel_size=3,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Activation(activation='relu')(x)
+    x = keras.layers.AveragePooling2D(
+        pool_size=2,
+        padding='same',
+    )(x)
+    x = keras.layers.Dropout(rate=0.5)(x)
+
+    # hidden 4
+    x = keras.layers.Conv2D(
+        filters=128,
+        kernel_size=3,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Conv2D(
+        filters=128,
+        kernel_size=3,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Activation(activation='relu')(x)
+    x = keras.layers.AveragePooling2D(
+        pool_size=2,
+        padding='same',
+    )(x)
+    x = keras.layers.Dropout(rate=0.5)(x)
+
+    # hidden 5
+    x = keras.layers.Conv2D(
+        filters=256,
+        kernel_size=3,
+        padding='same',
+    )(x)
+    x = keras.layers.BatchNormalization()(x)
+
+    # output
+    x = keras.layers.Conv2D(
+        filters=7,
+        kernel_size=3,
+        padding='same',
+    )(x)
+    x = keras.layers.GlobalAveragePooling2D()(x)
+    outputs = keras.layers.Activation(activation='softmax')(x)
+
+    model = keras.Model(inputs=inputs, outputs=outputs)
+    model.compile(
+        optimizer=keras.optimizers.Adam(),
+        loss=keras.losses.SparseCategoricalCrossentropy(),
+        metrics=['acc'],
+    )
+    return model
+
+
 def create_model_64():
     # input
     inputs = keras.layers.Input(
@@ -247,7 +360,13 @@ def test_model_64():
     model.summary()
 
 
+def test_model():
+    model = create_model()
+    model.summary()
+
+
 if __name__ == '__main__':
     test_resnet()
     test_resnet_101()
     test_model_64()
+    test_model()
