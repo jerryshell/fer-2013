@@ -24,10 +24,6 @@ def create_resnet():
         name='inputs'
     )
 
-    x = keras.layers.Dropout(
-        rate=0.2
-    )(inputs)
-
     x = resnet.ResNet(
         stack_fn=stack_fn,
         preact=False,
@@ -37,7 +33,7 @@ def create_resnet():
         weights=None,
         input_shape=(48, 48, 1),
         pooling='avg',
-    )(x)
+    )(inputs)
 
     x = keras.layers.Dropout(
         rate=0.5

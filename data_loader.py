@@ -1,5 +1,6 @@
 import itertools
 
+# import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -37,6 +38,15 @@ class DataLoader:
         print('validation_data_count', self.validation_data_count)
         print('test_data_count', self.test_data_count)
 
+        # # train_data_x
+        # self.train_data_x = self.train_data[:, 1]
+        # self.train_data_x = [x.split(' ') for x in self.train_data_x]
+        # self.train_data_x = [list(map(int, x)) for x in self.train_data_x]
+        # self.train_data_x = np.reshape(self.train_data_x, (len(self.train_data_x), 48, 48, 1))
+        #
+        # # train_data_y
+        # self.train_data_y = self.train_data[:, 0]
+
     def train_data_generator(self):
         return itertools.cycle(self.train_data)
 
@@ -54,11 +64,24 @@ if __name__ == '__main__':
     validation_data_generator = data_loader.validation_data_generator()
     test_data_generator = data_loader.test_data_generator()
 
-    print(next(train_data_generator))
-    print(next(train_data_generator))
-    print('---')
-    print(next(validation_data_generator))
-    print(next(validation_data_generator))
-    print('---')
-    print(next(test_data_generator))
-    print(next(test_data_generator))
+    # print(next(train_data_generator))
+    # print(next(train_data_generator))
+    # print('---')
+    # print(next(validation_data_generator))
+    # print(next(validation_data_generator))
+    # print('---')
+    # print(next(test_data_generator))
+    # print(next(test_data_generator))
+
+    # train_data_x = data_loader.train_data[:, 1]
+    # print(train_data_x[0])
+    # print(train_data_x.shape)
+    # train_data_x = [map(int, x.split(' ')) for x in train_data_x]
+    # print(train_data_x[0])
+
+    # print(data_loader.train_data_x[0])
+    # plt.imshow(data_loader.train_data_x[0])
+    # plt.show()
+    # print(len(data_loader.train_data_x))
+    # print(data_loader.train_data_y[0])
+    # print(len(data_loader.train_data_y))
