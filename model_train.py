@@ -55,6 +55,9 @@ def train(
         steps=data_helper.test_data_count // batch_size,
     )
 
+    # 保存最终模型
+    model.save(filepath=save_filename + '.final.h5')
+
 
 if __name__ == '__main__':
     import sys
