@@ -211,13 +211,13 @@ def create_model_64():
     base_filters = 64
 
     # hidden 1
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=base_filters,
         kernel_size=3,
         activation='relu',
         kernel_regularizer=keras.regularizers.l2(),
     )(inputs)
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=base_filters,
         kernel_size=3,
         activation='relu',
@@ -233,14 +233,14 @@ def create_model_64():
     )(x)
 
     # hidden 2
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=2 * base_filters,
         kernel_size=3,
         activation='relu',
         padding='same',
     )(x)
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=2 * base_filters,
         kernel_size=3,
         activation='relu',
@@ -256,14 +256,14 @@ def create_model_64():
     )(x)
 
     # hidden 3
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=2 * 2 * base_filters,
         kernel_size=3,
         activation='relu',
         padding='same',
     )(x)
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=2 * 2 * base_filters,
         kernel_size=3,
         activation='relu',
@@ -279,14 +279,14 @@ def create_model_64():
     )(x)
 
     # hidden 4
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=2 * 2 * 2 * base_filters,
         kernel_size=3,
         activation='relu',
         padding='same',
     )(x)
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.SeparableSeparableConv2D(
+    x = keras.layers.SeparableConv2D(
         filters=2 * 2 * 2 * base_filters,
         kernel_size=3,
         activation='relu',
