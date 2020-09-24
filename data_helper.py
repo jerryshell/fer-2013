@@ -30,7 +30,7 @@ class DataHelper:
         # 根据 batch_size 填充返回结果
         for batch_index in range(batch_size):
             # 从 data_generator 中读取下一个数据
-            label, pixel_raw_data = next(data_generator)
+            label, pixel_raw_data, _ = next(data_generator)
             # pixel_raw_data2pixel_list
             pixel_list = self.pixel_raw_data2pixel_list(pixel_raw_data)
             # 数据重整 (48 * 48,) -> (48, 48, 1)
@@ -65,6 +65,8 @@ class DataHelper:
 if __name__ == '__main__':
     data_helper = DataHelper()
     data_loader = DataLoader()
+
+    print('next(data_helper.raw_train_data_generator)', next(data_helper.raw_train_data_generator))
 
     for index, data in enumerate(data_loader.train_data):
         print('---')

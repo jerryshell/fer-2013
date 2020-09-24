@@ -93,15 +93,17 @@ def create_model():
         name='inputs',
     )
 
+    base_filters = 32
+
     # hidden 1
     x = keras.layers.Conv2D(
-        filters=16,
+        filters=base_filters,
         kernel_size=7,
         padding='same',
     )(inputs)
     x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Conv2D(
-        filters=16,
+        filters=base_filters,
         kernel_size=7,
         padding='same',
     )(x)
@@ -115,13 +117,13 @@ def create_model():
 
     # hidden 2
     x = keras.layers.Conv2D(
-        filters=32,
+        filters=2 * base_filters,
         kernel_size=5,
         padding='same',
     )(x)
     x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Conv2D(
-        filters=32,
+        filters=2 * base_filters,
         kernel_size=5,
         padding='same',
     )(x)
@@ -135,13 +137,13 @@ def create_model():
 
     # hidden 3
     x = keras.layers.Conv2D(
-        filters=64,
+        filters=2 * 2 * base_filters,
         kernel_size=3,
         padding='same',
     )(x)
     x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Conv2D(
-        filters=64,
+        filters=2 * 2 * base_filters,
         kernel_size=3,
         padding='same',
     )(x)
@@ -155,13 +157,13 @@ def create_model():
 
     # hidden 4
     x = keras.layers.Conv2D(
-        filters=128,
+        filters=2 * 2 * 2 * base_filters,
         kernel_size=3,
         padding='same',
     )(x)
     x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Conv2D(
-        filters=128,
+        filters=2 * 2 * 2 * base_filters,
         kernel_size=3,
         padding='same',
     )(x)
