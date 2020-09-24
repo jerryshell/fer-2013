@@ -38,7 +38,7 @@ def train(
             ),
             # 定时保存模型
             keras.callbacks.ModelCheckpoint(
-                filepath=save_filename,
+                filepath=save_filename + '.val.acc.best.h5',
                 monitor='val_acc',
                 verbose=0,
                 save_best_only=True,
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     train(
         data_helper=data_helper,
         model=model,
-        save_filename='fer.' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.h5',
+        save_filename='fer.' + datetime.now().strftime('%Y%m%d-%H%M%S'),
         batch_size=batch_size,
         epochs=epochs
     )
