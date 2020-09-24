@@ -49,7 +49,7 @@ def train(
         ],
     )
 
-    # 测试
+    # 最终模型测试
     model.evaluate(
         x=test_data_generator,
         steps=data_helper.test_data_count // batch_size,
@@ -57,6 +57,13 @@ def train(
 
     # 保存最终模型
     model.save(filepath=save_filename + '.final.h5')
+
+    # val_acc best 模型测试
+    val_acc_best_model = keras.models.load_model(save_filename + '.val.acc.best.h5')
+    val_acc_best_model.evaluate(
+        x=test_data_generator,
+        steps=data_helper.test_data_count // batch_size,
+    )
 
 
 if __name__ == '__main__':
