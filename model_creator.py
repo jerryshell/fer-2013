@@ -93,6 +93,9 @@ def create_model_66():
         name='inputs',
     )
 
+    # rescaling
+    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(inputs)
+
     base_filters = 64
 
     # hidden 1
@@ -100,7 +103,7 @@ def create_model_66():
         filters=base_filters,
         kernel_size=7,
         padding='same',
-    )(inputs)
+    )(x)
     x = keras.layers.BatchNormalization()(x)
     x = keras.layers.SeparableConv2D(
         filters=base_filters,
