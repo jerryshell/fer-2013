@@ -86,6 +86,12 @@ def create_model_resnet_101v2_dropout():
     return model
 
 
+def data_augmentation(inputs):
+    x = keras.layers.experimental.preprocessing.RandomFlip('horizontal')(inputs)
+    x = keras.layers.experimental.preprocessing.RandomRotation(0.1)(x)
+    return x
+
+
 def create_model_66():
     # input
     inputs = keras.layers.Input(
@@ -93,8 +99,11 @@ def create_model_66():
         name='inputs',
     )
 
+    # data augmentation
+    x = data_augmentation(inputs)
+
     # rescaling
-    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(inputs)
+    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
     base_filters = 64
 
