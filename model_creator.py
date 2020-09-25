@@ -86,7 +86,7 @@ def create_model_resnet_101v2_dropout():
     return model
 
 
-def create_model():
+def create_model_66():
     # input
     inputs = keras.layers.Input(
         shape=(48, 48, 1),
@@ -362,8 +362,8 @@ def test_model_64():
     model.summary()
 
 
-def test_model():
-    model = create_model()
+def test_model_66():
+    model = create_model_66()
     model.summary()
 
 
@@ -371,4 +371,4 @@ if __name__ == '__main__':
     test_resnet()
     test_resnet_101v2_dropout()
     test_model_64()
-    test_model()
+    test_model_66()
