@@ -54,24 +54,28 @@ def create_resnet():
     return model
 
 
-def create_model_resnet_101():
+def create_model_resnet_101v2_dropout():
     inputs = keras.layers.Input(
         shape=(48, 48, 1),
         name='inputs'
     )
 
-    resnet = keras.applications.ResNet101V2(
+    x = keras.applications.ResNet101V2(
         include_top=False,
         weights=None,
         input_shape=(48, 48, 1),
         pooling='avg'
     )(inputs)
 
+    x = keras.layers.Dropout(
+        rate=0.5
+    )(x)
+
     outputs = keras.layers.Dense(
         units=7,
         activation='softmax',
         name='outputs',
-    )(resnet)
+    )(x)
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
@@ -348,8 +352,8 @@ def test_resnet():
     model.summary()
 
 
-def test_resnet_101():
-    model = create_model_resnet_101()
+def test_resnet_101v2_dropout():
+    model = create_model_resnet_101v2_dropout()
     model.summary()
 
 
@@ -365,6 +369,6 @@ def test_model():
 
 if __name__ == '__main__':
     test_resnet()
-    test_resnet_101()
+    test_resnet_101v2_dropout()
     test_model_64()
     test_model()
