@@ -2,6 +2,21 @@ import tensorflow.keras as keras
 from tensorflow.python.keras.applications import resnet
 
 
+def data_augmentation(inputs):
+    x = inputs
+    x = keras.layers.experimental.preprocessing.RandomTranslation(
+        height_factor=0.05,
+        width_factor=0.05,
+    )(x)
+    x = keras.layers.experimental.preprocessing.RandomFlip(
+        mode='horizontal',
+    )(x)
+    x = keras.layers.experimental.preprocessing.RandomRotation(
+        factor=0.1,
+    )(x)
+    return x
+
+
 def stack_fn(x):
     x = resnet.stack2(x, 64, 2, stride1=1, name='conv2')
     x = keras.layers.Dropout(rate=0.5)(x)
@@ -19,10 +34,18 @@ def stack_fn(x):
 
 
 def create_resnet():
+    # input
     inputs = keras.layers.Input(
         shape=(48, 48, 1),
         name='inputs'
     )
+    x = inputs
+
+    # data augmentation
+    x = data_augmentation(x)
+
+    # rescaling
+    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
     x = resnet.ResNet(
         stack_fn=stack_fn,
@@ -33,7 +56,7 @@ def create_resnet():
         weights=None,
         input_shape=(48, 48, 1),
         pooling='avg',
-    )(inputs)
+    )(x)
 
     x = keras.layers.Dropout(
         rate=0.5
@@ -86,12 +109,6 @@ def create_model_resnet_101v2_dropout():
     return model
 
 
-def data_augmentation(inputs):
-    x = keras.layers.experimental.preprocessing.RandomFlip('horizontal')(inputs)
-    x = keras.layers.experimental.preprocessing.RandomRotation(0.1)(x)
-    return x
-
-
 def create_model_66():
     # input
     inputs = keras.layers.Input(
@@ -107,7 +124,7 @@ def create_model_66():
     x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
     # hidden layers
-    for filters in [64, 128, 256, 512]:
+    for filters in [128, 256, 512, 1024]:
         x = keras.layers.SeparableConv2D(
             filters=filters,
             kernel_size=7,

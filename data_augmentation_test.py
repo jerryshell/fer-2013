@@ -19,10 +19,15 @@ def data_augmentation_fn():
 
     x = inputs
 
-    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
+    x = keras.layers.experimental.preprocessing.RandomTranslation(
+        height_factor=0.05,
+        width_factor=0.05,
+    )(x)
 
     x = keras.layers.experimental.preprocessing.RandomFlip('horizontal')(x)
     x = keras.layers.experimental.preprocessing.RandomRotation(0.1)(x)
+
+    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
     outputs = x
 
@@ -42,6 +47,7 @@ print('label', label)
 print('class', class_list[int(label)])
 
 daf = data_augmentation_fn()
+daf.summary()
 
 plt.figure(figsize=(10, 10))
 for i in range(9):
