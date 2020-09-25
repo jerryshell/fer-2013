@@ -20,8 +20,8 @@ def data_augmentation_fn():
     x = inputs
 
     x = keras.layers.experimental.preprocessing.RandomTranslation(
-        height_factor=0.05,
-        width_factor=0.05,
+        height_factor=0.1,
+        width_factor=0.1,
     )(x)
 
     x = keras.layers.experimental.preprocessing.RandomFlip('horizontal')(x)

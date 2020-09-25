@@ -117,14 +117,14 @@ def create_model_66():
     )
     x = inputs
 
-    # data augmentation
-    x = data_augmentation(x)
-
-    # rescaling
-    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
+    # # data augmentation
+    # x = data_augmentation(x)
+    #
+    # # rescaling
+    # x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
     # hidden layers
-    for filters in [128, 256, 512, 1024]:
+    for filters in [64, 128, 256, 512]:
         x = keras.layers.SeparableConv2D(
             filters=filters,
             kernel_size=7,
