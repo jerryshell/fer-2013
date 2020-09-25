@@ -37,6 +37,10 @@ train_data_generator = data_helper.train_data_generator(1)
 
 data, label = next(train_data_generator)
 
+class_list = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+print('label', label)
+print('class', class_list[int(label)])
+
 daf = data_augmentation_fn()
 
 plt.figure(figsize=(10, 10))
