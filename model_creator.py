@@ -98,96 +98,36 @@ def create_model_66():
         shape=(48, 48, 1),
         name='inputs',
     )
+    x = inputs
 
     # data augmentation
-    x = data_augmentation(inputs)
+    x = data_augmentation(x)
 
     # rescaling
     x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
-    base_filters = 64
-
-    # hidden 1
-    x = keras.layers.SeparableConv2D(
-        filters=base_filters,
-        kernel_size=7,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.SeparableConv2D(
-        filters=base_filters,
-        kernel_size=7,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Activation(activation='relu')(x)
-    x = keras.layers.AveragePooling2D(
-        pool_size=2,
-        padding='same',
-    )(x)
-    x = keras.layers.Dropout(rate=0.5)(x)
+    # hidden layers
+    for filters in [64, 128, 256, 512]:
+        x = keras.layers.SeparableConv2D(
+            filters=filters,
+            kernel_size=7,
+            padding='same',
+        )(x)
+        x = keras.layers.BatchNormalization()(x)
+        x = keras.layers.SeparableConv2D(
+            filters=filters,
+            kernel_size=7,
+            padding='same',
+        )(x)
+        x = keras.layers.BatchNormalization()(x)
+        x = keras.layers.Activation(activation='relu')(x)
+        x = keras.layers.AveragePooling2D(
+            pool_size=2,
+            padding='same',
+        )(x)
+        x = keras.layers.Dropout(rate=0.5)(x)
 
     # hidden 2
-    x = keras.layers.SeparableConv2D(
-        filters=2 * base_filters,
-        kernel_size=5,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.SeparableConv2D(
-        filters=2 * base_filters,
-        kernel_size=5,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Activation(activation='relu')(x)
-    x = keras.layers.AveragePooling2D(
-        pool_size=2,
-        padding='same',
-    )(x)
-    x = keras.layers.Dropout(rate=0.5)(x)
-
-    # hidden 3
-    x = keras.layers.SeparableConv2D(
-        filters=2 * 2 * base_filters,
-        kernel_size=3,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.SeparableConv2D(
-        filters=2 * 2 * base_filters,
-        kernel_size=3,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Activation(activation='relu')(x)
-    x = keras.layers.AveragePooling2D(
-        pool_size=2,
-        padding='same',
-    )(x)
-    x = keras.layers.Dropout(rate=0.5)(x)
-
-    # hidden 4
-    x = keras.layers.SeparableConv2D(
-        filters=2 * 2 * 2 * base_filters,
-        kernel_size=3,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.SeparableConv2D(
-        filters=2 * 2 * 2 * base_filters,
-        kernel_size=3,
-        padding='same',
-    )(x)
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Activation(activation='relu')(x)
-    x = keras.layers.AveragePooling2D(
-        pool_size=2,
-        padding='same',
-    )(x)
-    x = keras.layers.Dropout(rate=0.5)(x)
-
-    # hidden 5
     x = keras.layers.SeparableConv2D(
         filters=256,
         kernel_size=3,
@@ -195,14 +135,17 @@ def create_model_66():
     )(x)
     x = keras.layers.BatchNormalization()(x)
 
-    # output
+    # hidden 3
     x = keras.layers.SeparableConv2D(
         filters=7,
         kernel_size=3,
         padding='same',
     )(x)
     x = keras.layers.GlobalAveragePooling2D()(x)
-    outputs = keras.layers.Activation(activation='softmax')(x)
+
+    # output
+    x = keras.layers.Activation(activation='softmax')(x)
+    outputs = x
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
