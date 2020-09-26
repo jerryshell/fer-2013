@@ -1,40 +1,14 @@
-import tensorflow.keras as keras
-from tensorflow.python.keras.applications import resnet
+from tensorflow import keras
 
-
-def data_augmentation(inputs):
-    x = inputs
-    x = keras.layers.experimental.preprocessing.RandomTranslation(
-        height_factor=0.05,
-        width_factor=0.05,
-    )(x)
-    x = keras.layers.experimental.preprocessing.RandomFlip(
-        mode='horizontal',
-    )(x)
-    x = keras.layers.experimental.preprocessing.RandomRotation(
-        factor=0.1,
-    )(x)
-    return x
-
-
-def stack_fn(x):
-    x = resnet.stack2(x, 64, 2, stride1=1, name='conv2')
-    x = keras.layers.Dropout(rate=0.5)(x)
-
-    x = resnet.stack2(x, 128, 2, stride1=2, name='conv3')
-    x = keras.layers.Dropout(rate=0.5)(x)
-
-    x = resnet.stack2(x, 256, 2, stride1=2, name='conv4')
-    x = keras.layers.Dropout(rate=0.5)(x)
-
-    x = resnet.stack2(x, 512, 2, stride1=2, name='conv5')
-    x = keras.layers.Dropout(rate=0.5)(x)
-
-    return x
+data_augmentation = keras.Sequential([
+    keras.layers.experimental.preprocessing.RandomFlip("horizontal"),
+    keras.layers.experimental.preprocessing.RandomRotation(0.1),
+    keras.layers.experimental.preprocessing.RandomZoom(0.1),
+])
 
 
 def create_resnet():
-    # input
+    # inputs
     inputs = keras.layers.Input(
         shape=(48, 48, 1),
         name='inputs'
@@ -47,58 +21,14 @@ def create_resnet():
     # rescaling
     x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
-    x = resnet.ResNet(
-        stack_fn=stack_fn,
-        preact=False,
-        use_bias=False,
-        model_name='resnet18',
-        include_top=False,
+    # resnet
+    x = keras.applications.ResNet50(
         weights=None,
         input_shape=(48, 48, 1),
         pooling='avg',
+        classes=7,
     )(x)
-
-    x = keras.layers.Dropout(
-        rate=0.5
-    )(x)
-
-    outputs = keras.layers.Dense(
-        units=7,
-        activation='softmax',
-        name='outputs',
-    )(x)
-
-    model = keras.Model(inputs=inputs, outputs=outputs)
-    model.compile(
-        optimizer=keras.optimizers.Adam(),
-        loss=keras.losses.SparseCategoricalCrossentropy(),
-        metrics=['acc'],
-    )
-    return model
-
-
-def create_model_resnet_101v2_dropout():
-    inputs = keras.layers.Input(
-        shape=(48, 48, 1),
-        name='inputs'
-    )
-
-    x = keras.applications.ResNet101V2(
-        include_top=False,
-        weights=None,
-        input_shape=(48, 48, 1),
-        pooling='avg'
-    )(inputs)
-
-    x = keras.layers.Dropout(
-        rate=0.5
-    )(x)
-
-    outputs = keras.layers.Dense(
-        units=7,
-        activation='softmax',
-        name='outputs',
-    )(x)
+    outputs = x
 
     model = keras.Model(inputs=inputs, outputs=outputs)
     model.compile(
@@ -324,11 +254,6 @@ def test_resnet():
     model.summary()
 
 
-def test_resnet_101v2_dropout():
-    model = create_model_resnet_101v2_dropout()
-    model.summary()
-
-
 def test_model_64():
     model = create_model_64()
     model.summary()
@@ -341,6 +266,5 @@ def test_model_66():
 
 if __name__ == '__main__':
     test_resnet()
-    test_resnet_101v2_dropout()
     test_model_64()
     test_model_66()
