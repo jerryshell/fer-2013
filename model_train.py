@@ -108,7 +108,7 @@ if __name__ == '__main__':
     data_helper = DataHelper()
 
     # 重新训练一个新模型
-    model = model_creator.create_resnet()
+    model = model_creator.create_xception()
     train(
         data_helper=data_helper,
         model=model,
