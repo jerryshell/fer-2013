@@ -147,16 +147,19 @@ def create_model_66():
     # x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
     # hidden layers
-    for filters in [64, 128, 256, 512]:
+    filters_list = [64, 128, 256, 512]
+    kernel_size_list = [7, 5, 3, 3]
+    for filters, kernel_size in zip(filters_list, kernel_size_list):
+        print('filters', filters, 'kernel_size', kernel_size)
         x = keras.layers.SeparableConv2D(
             filters=filters,
-            kernel_size=7,
+            kernel_size=kernel_size,
             padding='same',
         )(x)
         x = keras.layers.BatchNormalization()(x)
         x = keras.layers.SeparableConv2D(
             filters=filters,
-            kernel_size=7,
+            kernel_size=kernel_size,
             padding='same',
         )(x)
         x = keras.layers.BatchNormalization()(x)
