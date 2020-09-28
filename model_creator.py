@@ -68,7 +68,7 @@ def create_xception(input_shape=(48, 48, 1), num_classes=7):
     return model
 
 
-def create_resnet():
+def create_res_net():
     # inputs
     inputs = keras.layers.Input(
         shape=(48, 48, 1),
@@ -84,6 +84,38 @@ def create_resnet():
 
     # resnet
     x = keras.applications.ResNet50(
+        weights=None,
+        input_shape=(48, 48, 1),
+        pooling='avg',
+        classes=7,
+    )(x)
+    outputs = x
+
+    model = keras.Model(inputs=inputs, outputs=outputs)
+    model.compile(
+        optimizer=keras.optimizers.Adam(),
+        loss=keras.losses.SparseCategoricalCrossentropy(),
+        metrics=['acc'],
+    )
+    return model
+
+
+def create_mobile_net():
+    # inputs
+    inputs = keras.layers.Input(
+        shape=(48, 48, 1),
+        name='inputs'
+    )
+    x = inputs
+
+    # data augmentation
+    x = data_augmentation(x)
+
+    # rescaling
+    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
+
+    # resnet
+    x = keras.applications.MobileNet(
         weights=None,
         input_shape=(48, 48, 1),
         pooling='avg',
@@ -313,25 +345,36 @@ def create_model_64():
 def test_xception():
     model = create_xception()
     model.summary()
+    keras.utils.plot_model(model, to_file='xception.png', show_shapes=True)
 
 
-def test_resnet():
-    model = create_resnet()
+def test_res_net():
+    model = create_res_net()
     model.summary()
+    keras.utils.plot_model(model, to_file='res_net.png', show_shapes=True)
+
+
+def test_mobile_net():
+    model = create_mobile_net()
+    model.summary()
+    keras.utils.plot_model(model, to_file='mobile_net.png', show_shapes=True)
 
 
 def test_model_64():
     model = create_model_64()
     model.summary()
+    keras.utils.plot_model(model, to_file='model_64.png', show_shapes=True)
 
 
 def test_model_66():
     model = create_model_66()
     model.summary()
+    keras.utils.plot_model(model, to_file='model_66.png', show_shapes=True)
 
 
 if __name__ == '__main__':
     test_xception()
-    test_resnet()
+    test_res_net()
+    test_mobile_net()
     test_model_64()
     test_model_66()
