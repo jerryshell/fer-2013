@@ -1,15 +1,13 @@
 import matplotlib.pyplot as plt
 from tensorflow import keras
-from tensorflow.keras import layers
 
 from data_helper import DataHelper
 
-data_augmentation = keras.Sequential(
-    [
-        layers.experimental.preprocessing.RandomFlip("horizontal"),
-        layers.experimental.preprocessing.RandomRotation(0.1),
-    ]
-)
+data_augmentation = keras.Sequential([
+    keras.layers.experimental.preprocessing.RandomFlip("horizontal"),
+    keras.layers.experimental.preprocessing.RandomRotation(0.1),
+    keras.layers.experimental.preprocessing.RandomZoom(0.1),
+])
 
 
 def data_augmentation_fn():
@@ -19,13 +17,14 @@ def data_augmentation_fn():
 
     x = inputs
 
-    x = keras.layers.experimental.preprocessing.RandomTranslation(
-        height_factor=0.1,
-        width_factor=0.1,
-    )(x)
+    # x = keras.layers.experimental.preprocessing.RandomTranslation(
+    #     height_factor=0.1,
+    #     width_factor=0.1,
+    # )(x)
 
     x = keras.layers.experimental.preprocessing.RandomFlip('horizontal')(x)
     x = keras.layers.experimental.preprocessing.RandomRotation(0.1)(x)
+    x = keras.layers.experimental.preprocessing.RandomZoom(0.1)(x)
 
     x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
