@@ -1,7 +1,7 @@
 # IDEA
 .idea
 __pycache__
-data/
+data/*.csv
 logs/
 **/*.h5
 
