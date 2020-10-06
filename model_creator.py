@@ -100,38 +100,6 @@ def create_res_net():
     return model
 
 
-def create_mobile_net():
-    # inputs
-    inputs = keras.layers.Input(
-        shape=(48, 48, 1),
-        name='inputs'
-    )
-    x = inputs
-
-    # data augmentation
-    x = data_augmentation(x)
-
-    # rescaling
-    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
-
-    # resnet
-    x = keras.applications.MobileNet(
-        weights=None,
-        input_shape=(48, 48, 1),
-        pooling='avg',
-        classes=7,
-    )(x)
-    outputs = x
-
-    model = keras.Model(inputs=inputs, outputs=outputs)
-    model.compile(
-        optimizer=keras.optimizers.Adam(),
-        loss=keras.losses.SparseCategoricalCrossentropy(),
-        metrics=['acc'],
-    )
-    return model
-
-
 def create_model_66():
     # input
     inputs = keras.layers.Input(
@@ -142,9 +110,9 @@ def create_model_66():
 
     # # data augmentation
     # x = data_augmentation(x)
-    #
-    # # rescaling
-    # x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
+
+    # rescaling
+    x = keras.layers.experimental.preprocessing.Rescaling(1. / 255)(x)
 
     # hidden layers
     filters_list = [64, 128, 256, 512]
@@ -357,12 +325,6 @@ def test_res_net():
     keras.utils.plot_model(model, to_file='res_net.png', show_shapes=True)
 
 
-def test_mobile_net():
-    model = create_mobile_net()
-    model.summary()
-    keras.utils.plot_model(model, to_file='mobile_net.png', show_shapes=True)
-
-
 def test_model_64():
     model = create_model_64()
     model.summary()
@@ -378,6 +340,5 @@ def test_model_66():
 if __name__ == '__main__':
     test_xception()
     test_res_net()
-    test_mobile_net()
     test_model_64()
     test_model_66()
