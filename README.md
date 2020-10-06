@@ -10,6 +10,12 @@ Data Download: https://www.kaggle.com/c/3364/download-all
 python3 model_train.py 64 200
 ```
 
+## Demo
+
+```bash
+python3 demo.py
+```
+
 ## Model Structure
 
 ![Model Structure](img/model_66.png)
