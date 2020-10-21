@@ -18,6 +18,10 @@ class_list = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 while True:
     ret, frame = cap.read()
 
+    if frame is None:
+        print("frame is None")
+        continue
+
     if not ret:
         print("Can't receive frame (stream end?). Exiting ...")
         break
@@ -35,6 +39,10 @@ while True:
         face_bottom = face.bottom()
         print('(face_left, face_top, face_right, face_bottom)', (face_left, face_top, face_right, face_bottom))
 
+        if face_left < 0 or face_top < 0 or face_right < 0 or face_bottom < 0:
+            print('face_left < 0 or face_top < 0 or face_right < 0 or face_bottom < 0')
+            continue
+
         # rectangle
         cv.rectangle(
             frame,
@@ -45,16 +53,21 @@ while True:
         )
 
         # face rgb
-        face_cut = frame[face_top:face_bottom, face_left:face_right]
-        cv.imshow('face_cut' + str(+index), face_cut)
+        # face_cut = frame[face_top:face_bottom, face_left:face_right]
+        # cv.imshow('face_cut' + str(+index), face_cut)
 
         # face gray
         face_gray_cut = gray[face_top:face_bottom, face_left:face_right]
-        cv.imshow('face_gray_cut' + str(+index), face_gray_cut)
+        print('---')
+        print('face_gray_cut', face_gray_cut)
+        print('len(face_gray_cut)', len(face_gray_cut))
+        if len(face_gray_cut) <= 0:
+            continue
+        # cv.imshow('face_gray_cut' + str(+index), face_gray_cut)
 
         # face gray resize
         face_gray_cut_resize = cv.resize(face_gray_cut, (48, 48))
-        cv.imshow('face_gray_cut_resize' + str(+index), face_gray_cut_resize)
+        # cv.imshow('face_gray_cut_resize' + str(+index), face_gray_cut_resize)
 
         # expand dims (48, 48) -> (48, 48, 1)
         face_gray_for_predict = np.expand_dims(face_gray_cut_resize, -1)
