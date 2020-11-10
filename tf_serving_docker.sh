@@ -1,0 +1,1 @@
+docker run --rm -p 8501:8501 -v "$(pwd)/model_tf:/models/fer/0" -e MODEL_NAME=fer tensorflow/serving
