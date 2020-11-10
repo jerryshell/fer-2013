@@ -10,10 +10,24 @@ Data Download: https://www.kaggle.com/c/3364/download-all
 python3 model_train.py 64 200
 ```
 
-## Demo
+## Local Demo
 
 ```bash
-python3 demo.py
+python3 ./demo.py
+```
+
+## TensorFlow Serving Demo with Docker
+
+```bash
+python3 ./h5_2_tf.py
+```
+
+```bash
+bash ./tf_serving_docker.sh
+```
+
+```bash
+python3 ./demo_tf_serving.py
 ```
 
 ## Model Structure
