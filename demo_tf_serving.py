@@ -93,7 +93,9 @@ while True:
         print('class_index', class_index)
 
         # result text
-        result_text = class_list[class_index] + ' ' + str(predictions[0][class_index])
+        class_text = class_list[class_index]
+        probability = str(round(predictions[0][class_index], 2))
+        result_text = class_text + ' ' + probability
         cv.putText(frame, result_text, (face_left, face_top), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 1, cv.LINE_AA)
 
     cv.imshow('camera', frame)
